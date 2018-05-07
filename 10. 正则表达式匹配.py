@@ -24,20 +24,28 @@ class Solution:
                 ish=True
                 next_p+=2
             else:
-                if (p[t]==p[next_p] or p[t]=='.') and ish:
+                if p[t]==p[next_p]  and ish:
                     next_p+=1
+
                 break
         if next_s<lens:
             return False
         elif next_p==lenp :
             return True
-        else:
+        elif next_p+1==lenp and len(s)>0 and s[-1]==p[next_p] and (p[next_p]==p[t] or p[t]=='.' )  and ish:
+            return True
+        else :
             return False
 
 
 s=Solution()
 test=[
+
+{"input": ("ab",".*.."), "output":True},
+{"input": ("a","ab*a"), "output": False},
+{"input": ("","."), "output": False},
 {"input": ("bbbba",".*a*a"), "output": True},
+{"input": ("ab",".*c"), "output": False},
 {"input": ("aab", "c*a*b"), "output": True},
 {"input": ("aaa","aaaa"), "output": False},
 {"input": ("aaa","ab*a*c*a"), "output": True},
@@ -45,9 +53,8 @@ test=[
 {"input": ("aa", "a"), "output": False},
 {"input": ("aa", "a*"), "output":True},
 {"input": ("ab",".*"), "output": True},
-
 {"input":("mississippi","mis*is*p*."),"output":False},
-      ]
+]
 
 for t in test:
     r=s.isMatch(t['input'][0],t['input'][1])
