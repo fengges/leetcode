@@ -2,47 +2,34 @@ class Solution:
     def isMatch(self, s, p):
         lenp=len(p)
         lens=len(s)
-        next_p=0
-        next_s = 0
-        while next_s<lens and next_p<lenp:
-            a=s[next_s]
-            if a!=p[next_p] and p[next_p]!='.':
-                if (next_p + 1) < lenp and p[next_p + 1] == '*':
-                    next_p += 2
-                    continue
-                else:
-                    return False
-            if (next_p+1)<lenp and p[next_p+1]=='*':
-                pass
-            else:
-                next_p += 1
-            next_s+=1
-        t=next_p
-        ish=False
-        while next_p<lenp:
-            if next_p+1<lenp and p[next_p+1]=='*':
-                ish=True
-                next_p+=2
-            else:
-                if p[t]==p[next_p]  and ish:
-                    next_p+=1
+        d=[False]*(lenp+1)
+        # dp=[d]*(lens+1)
+        dp=[d]
+        import copy
+        for i in range(lens):
+            dp.append(copy.copy(d))
+        dp[0][0] = True
+        for i in range(lenp):
+            if (p[i] == '*' and dp[0][i-1]):
+                dp[0][i+1] = True
+        for i in range(lens):
+            for j in range(lenp):
+                if (p[j] == '.'  or p[j] == s[i]) :
+                    dp[i+1][j+1] = dp[i][j]
+                if (p[j] == '*') :
+                    if (p[j-1] != s[i] and p[j-1] != '.') :
+                        dp[i+1][j+1] = dp[i+1][j-1]
+                    else :
+                        dp[i+1][j+1] = (dp[i+1][j] or dp[i][j+1] or dp[i+1][j-1])
 
-                break
-        if next_s<lens:
-            return False
-        elif next_p==lenp :
-            return True
-        elif next_p+1==lenp and len(s)>0 and s[-1]==p[next_p] and (p[next_p]==p[t] or p[t]=='.' )  and ish:
-            return True
-        else :
-            return False
+        return dp[lens][lenp]
 
 
 s=Solution()
 test=[
-
-{"input": ("ab",".*.."), "output":True},
 {"input": ("a","ab*a"), "output": False},
+{"input": ("ab",".*.."), "output":True},
+
 {"input": ("","."), "output": False},
 {"input": ("bbbba",".*a*a"), "output": True},
 {"input": ("ab",".*c"), "output": False},
