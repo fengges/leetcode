@@ -1,50 +1,33 @@
 class Solution:
     def trap(self, height):
-        """
-        :type height: List[int]
-        :rtype: int
-        """
+        ret = 0
+        if len(height) == 0:
+            return ret;
+        lmax ,rmax = 0,0
+        l , r = 0,len(height) - 1;
+        while l < r:
+
+            lmax = max(lmax, height[l])
+            rmax = max(rmax, height[r])
+            if lmax < rmax:
+                ret += lmax-height[l]
+                l+=1
+            else:
+                ret += rmax-height[r]
+                r-=1
+        return ret
 
 
+s=Solution()
 
-import itchat
-itchat.login()
-#爬取自己好友相关信息， 返回一个json文件
-friends = itchat.get_friends(update=True)[0:]
+test=[
+{"input":[5,4,1,2],"output":1},
+{"input":[0,1,0,2,1,0,1,3,2,1,2,1],"output":6},
+{"input":[5,2,1,2,1,5],"output":14},
+      ]
 
-#初始化计数器
-male = female = other = 0
-#friends[0]是自己的信息，所以要从friends[1]开始
-for i in friends[1:]:
-    sex = i["Sex"]
-    if sex == 1:
-        male += 1
-    elif sex == 2:
-        female += 1
-    else:
-        other +=1
-#计算朋友总数
-total = len(friends[1:])
-#打印出自己的好友性别比例
-print("男性好友： %.2f%%" % (float(male)/total*100) + "\n" +
-"女性好友： %.2f%%" % (float(female) / total * 100) + "\n" +
-
-"不明性别好友： %.2f%%" % (float(other) / total * 100))
-
-def get_var(var):
-    variable = []
-    for i in friends:
-        value = i[var]
-        variable.append(value)
-    return variable
-#调用函数得到各变量，并把数据存到csv文件中，保存到桌面
-NickName = get_var("NickName")
-Sex = get_var('Sex')
-Province = get_var('Province')
-City = get_var('City')
-Signature = get_var('Signature')
-from pandas import DataFrame
-data = {'NickName': NickName, 'Sex': Sex, 'Province': Province,
-        'City': City, 'Signature': Signature}
-frame = DataFrame(data)
-frame.to_csv('data.csv', index=True)
+for t in test:
+    r=s.trap(t['input'])
+    if r!=t['output']:
+        print("error:"+str(t)+" out:"+str(r))
+        r = s.trap(t['input'])
