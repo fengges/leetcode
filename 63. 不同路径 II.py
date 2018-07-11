@@ -1,5 +1,21 @@
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid):
+
+        w,h=len(obstacleGrid),len(obstacleGrid[0])
+        path=[ [ 0 for c in line ] for line in obstacleGrid]
+        for i in range(w):
+            for j in range(h):
+                if obstacleGrid[i][j]==0:
+                    if i==0 and j==0:
+                        path[0][0]=1
+                    elif i==0:
+                        path[0][j]= path[0][j-1]
+                    elif j==0:
+                        path[i][0]= path[i-1][0]
+                    else:
+                        path[i][j]= path[i-1][j]+ path[i][j-1]
+        return path[w-1][h-1]
+    def uniquePathsWithObstacles2(self, obstacleGrid):
         if obstacleGrid[0][0]==1:
             return 0
         w,h=len(obstacleGrid),len(obstacleGrid[0])
@@ -17,21 +33,19 @@ class Solution:
 
 
         return num
-
-
-
 s=Solution()
 
 test=[
-{"input":[[1]],"output":0},
-{"input":[[0,1]],"output":0},
-{"input":[[0]
-],"output":1},
 {"input":[
   [0,0,0],
   [0,1,0],
   [0,0,0]
 ],"output":2},
+{"input":[[1]],"output":0},
+{"input":[[0,1]],"output":0},
+{"input":[[0]
+],"output":1},
+
 
 ]
 
