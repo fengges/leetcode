@@ -6,7 +6,6 @@ class Solution:
         lmax ,rmax = 0,0
         l , r = 0,len(height) - 1;
         while l < r:
-
             lmax = max(lmax, height[l])
             rmax = max(rmax, height[r])
             if lmax < rmax:
