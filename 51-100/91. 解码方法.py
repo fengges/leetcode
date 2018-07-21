@@ -11,12 +11,15 @@ class Solution:
                     result.append(result[-1])
                 else:
                     result.append(result[-1]+1)
+            elif t=="0" and i==len(s)-1 and int(s[i-1:i+1])>26:
+                result.append(0)
             else:
                 result.append(result[-1] )
         return result[-1]
 
 s=Solution()
 test=[
+{"input":"230", "output": 0},
 {"input":"110", "output": 1},
 {"input":"100", "output": 0},
 {"input":"101", "output": 1},
