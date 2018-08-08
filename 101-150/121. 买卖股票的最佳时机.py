@@ -1,10 +1,13 @@
 class Solution:
     def maxProfit(self, prices):
-        minIndex=prices.index(min(prices))
-        if minIndex==len(prices)-1:
+        if len(prices)==0:
             return 0
-        maxIndex=prices[minIndex:].index(max(prices[minIndex:]))+ minIndex
-        return prices[maxIndex]-prices[minIndex]
+        buy=prices[0]
+        result=0
+        for i in range(1,len(prices)):
+            buy=min(buy,prices[i])
+            result=max(result,prices[i]-buy)
+        return result
 
 
 s=Solution()

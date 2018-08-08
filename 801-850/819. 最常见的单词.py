@@ -1,5 +1,20 @@
+import re
 class Solution:
     def mostCommonWord(self, paragraph, banned):
+        rr = re.compile(r'[a-zA-Z]+')
+        words=rr.findall(paragraph.lower())
+        dic={}
+        for i in words:
+            if i in dic:
+                dic[i]+=1
+            else:
+                dic[i]=1
+        maxKey=None
+        for k in dic:
+            if (maxKey is None or dic[k]>dic[maxKey]) and k not in banned:
+                maxKey=k
+        return maxKey
+    def mostCommonWord2(self, paragraph, banned):
         words=paragraph.split(' ')
         dic={}
         for w in words:
