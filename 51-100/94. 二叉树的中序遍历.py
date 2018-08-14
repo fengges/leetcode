@@ -18,7 +18,6 @@ class Solution:
                 result.append(temp.val)
                 temp=temp.right
                 del list[-1]
-
         return result
 def toTreeNode2(nums):
     tree=[TreeNode(n) for n in nums]
