@@ -13,6 +13,16 @@ class Solution:
             if nums[i]!=i:
                 return i
         return length
+    def firstMissingPositive2(self,nums):
+        if len(nums)==0:
+            return 1
+        dic={}
+        for i in nums:
+            dic[i]=1
+        for i in range(1,max(nums)):
+            if i not in dic:
+                return i
+        return max(nums)+1
 
 s=Solution()
 
@@ -24,7 +34,7 @@ test=[
       ]
 
 for t in test:
-    r=s.firstMissingPositive(t['input'])
+    r=s.firstMissingPositive2(t['input'])
     if r!=t['output']:
         print("error:"+str(t)+" out:"+str(r))
         r = s.firstMissingPositive(t['input'])

@@ -1,27 +1,17 @@
 class Solution:
     def decodeAtIndex(self, S, K):
+        num=0
         index=0
         dic={}
-        for i in S:
+        for index,i in enumerate(S):
             if i>="0" and i<="9":
-                for d in dic:
-                    item=[]
-                    for t in dic[d]:
-                        for l in range(1,int(i)):
-                            tmp=t+index*l
-                            if tmp==K:
-                                return d
-                            item.append(tmp)
-                    dic[d].extend(item)
-                index = index * int(i)
+                num=num*int(i)
             else:
-                index = index +1
-                if i in dic:
-                    dic[i].append(index)
-                else:
-                    dic[i]=[index]
-                if index==K:
-                    return i
+                num+=1
+            if num>=K:
+                break
+        for i in range(index):
+            pass
 
 s=Solution()
 test=[

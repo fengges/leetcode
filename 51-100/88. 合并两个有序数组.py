@@ -1,5 +1,11 @@
 class Solution:
     def merge(self, nums1, m, nums2, n):
+        for i in range(n):
+            nums1[m+i]=nums2[i]
+        nums1.sort()
+        return nums1
+
+    def merge2(self, nums1, m, nums2, n):
         for i in range(m-1,-1,-1):
             nums1[n+i]=nums1[i]
         t,s1,s2=0,0,0
