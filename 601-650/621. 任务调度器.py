@@ -7,8 +7,14 @@ class Solution:
                 dic[t]+=1
             else:
                 dic[t]=1
-        
-        return step
+        t=sorted(dic.items(),key=lambda x:x[1],reverse=True)
+        s=0
+        maxL=t[0][1]
+        for i in t:
+            if i[1]==maxL:
+                s+=1
+
+        return max(len(tasks),(n+1)*(maxL-1)+s)
 
 s=Solution()
 test=[

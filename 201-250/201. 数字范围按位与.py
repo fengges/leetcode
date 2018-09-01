@@ -1,19 +1,17 @@
 class Solution:
     def rangeBitwiseAnd(self, m, n):
-        t=m
-        for i in range(m+1,n+1):
-            t=t&i
-        sum=0
-        for i in range(32):
-            if t&1==1:
-                sum+=1
-            t=t>>1
-        return sum
+        count = 0
+        while n != m:
+            m >>= 1
+            n >>= 1
+            count+=1
+        return m << count
 
 
 s=Solution()
 
 test=[
+{"input":[600000000,2147483647],"output":4},
 {"input":[5,7],"output":4},
 {"input":[0,1],"output":0},
 

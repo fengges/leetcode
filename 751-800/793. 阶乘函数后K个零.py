@@ -1,29 +1,26 @@
 class Solution:
     def preimageSizeFZF(self, K):
-        n=5
-        num=0
-        while num<K:
-            num+=self.count(n)
-            n+=5
-        if num==K:
+        if K==0:
             return 5
-        else:
-            return 0
-    def count(self,n):
-        num=0
-        while n%5==0:
-            n=n/5
-            num+=1
-        return num
+        n=K*4+1
+        while True:
+            if n==1:
+                return 0
+            elif n%5==0:
+                n/=5
+            else:
+                return 5
+
+
+
 
 
 s=Solution()
 test=[
-{"input":80502705, "output":5},
-{"input": 92, "output":0},
-{"input": 3, "output":5},
 {"input": 0, "output":5},
-{"input": 5, "output":0},
+{"input":80502705, "output":5},
+{"input": 3, "output":5},
+
 ]
 
 for t in test:

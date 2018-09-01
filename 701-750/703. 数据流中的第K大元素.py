@@ -1,8 +1,8 @@
 class KthLargest:
     def __init__(self, k, nums):
-        nums.sort()
+        nums.sort(reverse=True)
         self.k=k
-        self.nums=nums
+        self.nums=nums[0:self.k]
 
     def add(self, val):
         self.nums.append(val)
@@ -11,7 +11,7 @@ class KthLargest:
         i=hight+1
         while low <= hight:
             mid = int((low + hight) / 2)
-            if val > self.nums[mid]:
+            if val < self.nums[mid]:
                 low = mid + 1
             else:
                 hight = mid - 1
@@ -19,16 +19,10 @@ class KthLargest:
         for j in range(i, low, -1):
             self.nums[j] = self.nums[j - 1]
         self.nums[low] = val
-        return self.nums[len(self.nums)-self.k]
-s=KthLargest(1,[])
-test=[
-{"input": 3, "output":4},
-{"input": 5, "output":5},
-{"input": 10, "output":5},
-{"input": 9, "output":8},
-{"input": 4, "output":8},
-]
-# s=KthLargest(3,[4,5,8,2])
+        if len(self.nums)>self.k:
+            del self.nums[-1]
+        return self.nums[-1]
+# s=KthLargest(1,[])
 # test=[
 # {"input": 3, "output":4},
 # {"input": 5, "output":5},
@@ -36,6 +30,14 @@ test=[
 # {"input": 9, "output":8},
 # {"input": 4, "output":8},
 # ]
+s=KthLargest(3,[4,5,8,2])
+test=[
+{"input": 3, "output":4},
+{"input": 5, "output":5},
+{"input": 10, "output":5},
+{"input": 9, "output":8},
+{"input": 4, "output":8},
+]
 # s=KthLargest(1,[-2])
 # test=[
 # {"input": -3, "output":4},

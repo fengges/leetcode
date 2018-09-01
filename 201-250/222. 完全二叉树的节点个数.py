@@ -1,0 +1,3 @@
+class Solution:
+    def countNodes(self, root):
+        pass
