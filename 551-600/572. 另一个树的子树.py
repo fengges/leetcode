@@ -1,10 +1,5 @@
 # Definition for a binary tree node.
-class TreeNode(object):
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-
+from  util.tree import TreeNode,deserialize
 class Solution(object):
     def isSubtree(self, s, t):
         if s is not None :

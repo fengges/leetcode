@@ -1,6 +1,10 @@
-deserialize
+class Node(object):
+    def __init__(self, val, children):
+        self.val = val
+        self.children = children
+
 class Solution(object):
-    def levelOrderBottom(self, root):
+    def levelOrder(self, root):
         r = []
         if root:
             list = [root]
@@ -9,15 +13,13 @@ class Solution(object):
             level = []
             while len(list) > start:
                 tmp = list[start]
-                if tmp.left:
-                    list.append(tmp.left)
-                if tmp.right:
-                    list.append(tmp.right)
+                if tmp.children:
+                    for t in tmp.children:
+                        list.append(t)
                 level.append(tmp.val)
                 if next == start:
                     r.append(level)
                     next = len(list) - 1
                     level = []
                 start += 1
-        r.reverse()
         return r

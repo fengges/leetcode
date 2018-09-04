@@ -1,8 +1,4 @@
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from  util.tree import TreeNode,deserialize
 class Solution:
     def mergeTrees(self, t1, t2):
         if t1 is None and t2 is None:

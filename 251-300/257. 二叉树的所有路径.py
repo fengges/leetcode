@@ -1,8 +1,4 @@
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
+from  util.tree import TreeNode,deserialize
 import copy
 class Solution:
     def binaryTreePaths(self, root):
@@ -24,32 +20,11 @@ class Solution:
             self.find(root.right, num)
         del num[-1]
 
-def toTreeNode(nums):
-    tree=[TreeNode(n) for n in nums]
-    f=0
-    i=1
-    while i<len(tree):
-        if tree[f].val is None:
-            f+=1
-            continue
-        if tree[i].val:
-            tree[f].left=tree[i]
-        else:
-            tree[f].left = None
-        i += 1
-        if i==len(tree):
-            break
-        if tree[i].val:
-            tree[f].right=tree[i]
-        else:
-            tree[f].right = None
-        i += 1
-        f+=1
-    return tree[0]
+
 s=Solution()
 
 test=[
-{"input":toTreeNode([1,2,3,None,5]),"output": [2, -3, 4]},
+{"input":deserialize([1,2,3,None,5]),"output": [2, -3, 4]},
 
 ]
 for t in test:

@@ -1,6 +1,6 @@
 from  util.tree import TreeNode,deserialize
-class Solution(object):
-    def levelOrder(self, root):
+class Solution:
+    def zigzagLevelOrder(self, root):
         r=[]
         if root:
             list=[root]
@@ -19,20 +19,8 @@ class Solution(object):
                     next=len(list)-1
                     level=[]
                 start+=1
+        i=1
+        while i<len(r):
+            r[i].reverse()
+            i+=2
         return r
-
-
-s=Solution()
-
-test=[
-{"input":deserialize( [3,9,20,None,None,15,7]),"output":[
-  [3],
-  [9,20],
-  [15,7]
-]},
-]
-for t in test:
-    r=s.levelOrder(t['input'])
-    if r!=t['output']:
-        print("error:"+str(t)+" out:"+str(r))
-        r = s.levelOrder(t['input'])

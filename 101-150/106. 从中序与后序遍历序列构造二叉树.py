@@ -1,9 +1,4 @@
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-
+from  util.tree import TreeNode,deserialize
 class Solution:
     def buildTree(self,  inorder, postorder):
         if len(postorder)==0:
