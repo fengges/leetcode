@@ -2,6 +2,7 @@ class Solution:
     def nextGreaterElements(self, nums):
 
         r=[]
+        r.index()
         for n in range(len(nums)):
             r.append(self.find(n,nums))
         return r
