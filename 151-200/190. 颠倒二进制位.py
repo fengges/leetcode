@@ -15,8 +15,6 @@ class Solution:
 s=Solution()
 test=[
 {"input":     43261596, "output":1},
-
-
 ]
 
 for t in test:
