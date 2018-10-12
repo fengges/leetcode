@@ -1,7 +1,17 @@
 class Solution:
     def isPossible(self, nums):
-        result=[]
-
+        size=len(nums)
+        if size<3:
+            return False
+        start=0
+        end=0
+        for i in range(size-1):
+            if nums[i+1]==nums[i] or nums[i+1]-nums[i]>1:
+                end=i
+                if end-start<2:
+                    return False
+                else:
+                    start=i+1
         return True
 
 

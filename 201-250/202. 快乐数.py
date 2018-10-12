@@ -7,6 +7,7 @@ class Solution:
         # 等于1的时候，是快乐数，结束循环
         while n!=1:
             #如果n在字典里面，则出现了循环，则这个数就不是快乐数
+            print(n)
             if n in dic:
                 return False
             # 将n加入字典
@@ -22,7 +23,7 @@ class Solution:
 s=Solution()
 
 test=[
-{"input":2,"output":True},
+{"input":19,"output":True},
 {"input":1,"output":True},
 
 ]
