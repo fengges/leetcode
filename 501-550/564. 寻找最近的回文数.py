@@ -28,7 +28,7 @@ class Solution:
 
 s=Solution()
 test=[
-{"input": '10', "output":'11'},
+{"input": '10', "output":'9'},
 {"input": '11', "output":'9'},
 {"input": '123', "output":'121'},
 {"input": '1', "output":'0'},

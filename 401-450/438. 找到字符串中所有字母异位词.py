@@ -8,7 +8,6 @@ class Solution:
             if i not in tmp:
                 tmp[i]=0
             tmp[i]+=1
-
         dic={i:0 for i in s}
         for i in range(size):
             dic[s[i]]+=1
