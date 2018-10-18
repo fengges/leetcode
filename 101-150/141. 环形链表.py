@@ -1,7 +1,4 @@
-class ListNode(object):
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+from util.link import ListNode,toLinkNode
 
 class Solution(object):
     def hasCycle(self, head):
@@ -19,16 +16,7 @@ class Solution(object):
             return False
         else:
             return True
-def toLinkNode(nums,C=False):
-    head=ListNode(0)
-    temp=head
-    for n in nums:
-        t = ListNode(n)
-        temp.next=t
-        temp=t
-    if C:
-        temp.next=head.next
-    return head.next
+
 s=Solution()
 
 test=[
