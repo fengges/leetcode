@@ -1,14 +1,16 @@
 class Solution:
     def wordBreak(self, s, wordDict):
-        if len(s)==1:
-            pass
         if len(s)==0:
             return True
-        for i in range(1,len(s)+1):
-            if s[0:i] in wordDict:
-                if self.wordBreak(s[i:],wordDict):
-                    return True
-        return False
+        flag=[False for i in range(len(s)+1)]
+        flag[0]=True
+        for i in range(len(s)):
+            for j in range(i+1):
+                str = s[j:i + 1]
+                if flag[j] and str in wordDict:
+                    flag[i+1]=True
+                    break
+        return flag[-1]
 
 s=Solution()
 

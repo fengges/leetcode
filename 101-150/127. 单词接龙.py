@@ -1,5 +1,7 @@
+import time
 class Solution:
     def ladderLength(self, beginWord, endWord, wordList):
+        s=time.time()
         if endWord not in wordList:
             return 0
         if beginWord not in wordList:
@@ -15,13 +17,11 @@ class Solution:
         length[start]=0
         path=[[] for i in wordList]
         while True:
-            start=self.find(length,flag,wordList,endWord,size)
-
+            start=self.find(length,flag)
             if start is None or start==index:
                 break
             flag[start] = False
             word=wordList[start]
-            size = self.count(word,endWord)
             for i in range(len(word)):
                 tmp_s=word[0:i]
                 tmp_e=word[i+1:]
@@ -41,27 +41,15 @@ class Solution:
         if length[index]==len(wordList)+1:
             return 0
         print(path[index])
+        print(time.time()-s)
         return length[index]+1
-    def find(self,length,flag,wordList,endWord,size):
+    def find(self,length,flag):
         index=None
         for i,v in enumerate(length):
             if flag[i] and (index is None or length[index]>length[i]) :
                 index=i
         return index
-    def count(self,a,b):
-        r=0
-        for i in range(len(a)):
-            if a[i]!=b[i]:
-                r+=1
-        return r
-    def jugde(self,a,b):
-        r=True
-        for i in range(len(a)):
-            if a[i]!=b[i]:
-                if not r:
-                    return False
-                r=False
-        return True
+
 
 s=Solution()
 test=[
