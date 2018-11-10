@@ -1,7 +1,38 @@
-import time
 class Solution:
     def ladderLength(self, beginWord, endWord, wordList):
-        s=time.time()
+        if endWord not in wordList:
+            return 0
+        if beginWord not in wordList:
+            wordList.insert(0,beginWord)
+        head=[[] for i in wordList]
+        dic={v:i for i,v in enumerate(wordList)}
+        flag=[True for i in wordList]
+        alf="qwertyuiopasdfghjklzxcvbnm"
+        for word in wordList:
+            for i in range(len(word)):
+                tmp_s=word[0:i]
+                tmp_e=word[i+1:]
+                for j in alf:
+                    tmp_w=tmp_s+j+tmp_e
+                    if tmp_w in dic:
+                        head[dic[word]].append(dic[tmp_w])
+        start = dic[beginWord]
+        end=dic[endWord]
+        length=[0 for i in wordList]
+        length[start]=1
+        flag[start]=False
+        vector=[start]
+        while len(vector)!=0:
+            start=vector[0]
+            words=head[start]
+            for w in words:
+                if flag[w]:
+                    length[w]=length[start]+1
+                    flag[w]=False
+                    vector.append(w)
+            del vector[0]
+        return length[end]
+    def ladderLength2(self, beginWord, endWord, wordList):
         if endWord not in wordList:
             return 0
         if beginWord not in wordList:
@@ -13,8 +44,8 @@ class Solution:
         start=wordList.index(beginWord)
         size=len(head)
         flag=[True for i in wordList]
-        length=[size+1 for i in wordList]
-        length[start]=0
+        length=[0 for i in wordList]
+        length[start]=1
         path=[[] for i in wordList]
         while True:
             start=self.find(length,flag)
@@ -41,8 +72,7 @@ class Solution:
         if length[index]==len(wordList)+1:
             return 0
         print(path[index])
-        print(time.time()-s)
-        return length[index]+1
+        return length[index]
     def find(self,length,flag):
         index=None
         for i,v in enumerate(length):
