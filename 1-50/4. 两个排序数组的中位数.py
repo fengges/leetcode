@@ -1,16 +1,14 @@
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
-
         len1 = len(nums1)
         len2 = len(nums2)
-
         size = len1 + len2
         if (size % 2 == 1):
             k=int(size/2+1)
-            return self.findKth(nums1,nums2,k);
+            return self.findKth(nums1,nums2,k)
         else:
             k=int(size/2)
-            return (self.findKth(nums1,nums2,k)+self.findKth(nums1,nums2,k+1))/2;
+            return (self.findKth(nums1,nums2,k)+self.findKth(nums1,nums2,k+1))/2
 
     def findKth(self,nums1,nums2,k):
         if (len(nums1) > len(nums2)) :

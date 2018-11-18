@@ -1,37 +1,45 @@
-import copy
 class Solution:
-    def wordBreak(self, s, wordDict):
+    def wordBreak2(self, s, wordDict):
         if len(s)==0:
             return True
         flag=[False for i in range(len(s)+1)]
         flag[0]=True
-        dic={0:[""]}
         for i in range(len(s)):
             for j in range(i+1):
                 str = s[j:i + 1]
                 if flag[j] and str in wordDict:
                     flag[i+1]=True
-                    tmp=dic[j]
-                    if i+1 not in dic:
-                        dic[i+1]=[]
-                    for t in tmp:
-                        t1=t+" "+str
-                        dic[i+1].append(t1)
-        if len(s) not in dic:
-            return []
-        return dic[len(s)]
+                    break
+        return flag[-1]
+    def wordBreak(self, s, wordDict):
+        r=[]
+        if self.wordBreak2(s,wordDict):
+            self.find(s,wordDict,0,len(s),r,[])
+        return r
+    def find(self,s,wordDict,start,end,r,path):
+        if start==end:
+            r.append(" ".join(path))
+        else:
+            for i in range(start+1,end+1):
+                tmp=s[start:i]
+                if tmp in wordDict:
+                    path.append(tmp)
+                    self.find(s,wordDict,i,end,r,path)
+                    path.pop()
+
 s=Solution()
 
 test=[
+{"input":["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]],"output":[
+  "pine apple pen apple",
+  "pineapple pen apple",
+  "pine applepen apple"
+]},
 {"input":["catsanddog", ["cat", "cats", "and", "sand", "dog"]],"output":[
   "cats and dog",
   "cat sand dog"
 ]},
-{"input":["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-,["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]],"output":[
-  "cats and dog",
-  "cat sand dog"
-]},
+
 
 {"input":["pineapplepenapple", ["apple", "pen", "applepen", "pine", "pineapple"]],"output":[
   "pine apple pen apple",
