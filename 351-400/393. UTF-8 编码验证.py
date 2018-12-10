@@ -1,34 +1,29 @@
 class Solution:
     def validUtf8(self, data):
-        size=len(data)
-        if size<=0 or size>4:
-            return False
-        if size==1:
-            return self.getBit(data[0])==0
-        else:
-            bit=self.getBit(data[0])
-            if bit[size]==0 and sum(bit[0:size])==size:
-                pass
-            else:
-                return False
-            for i in range(1,size):
-                bit=self.getBit(data[i])
-                if bit[0]==1 and bit[1]==0:
-                    continue
-                else:
+        cnt = 0  # 用于记录当前是几字节编码
+        for byte in data:
+            if 128 <= byte <= 191:  # 表示这数字对应的2进制 为 10xxxxxx 类型的，所以不能作为开头
+                if cnt == 0:  # 此时，如果 cnt==0 直接返回 False
                     return False
-        return True
-    def getBit(self,num):
-        r=[]
-        for i in range(8):
-            r.append(num%2)
-            num>>=1
-        r.reverse()
-        return r
+                cnt -= 1  # 当前 位 合法，进入下一位比较
+            else:  # -- -- 判断 当前 二进制 非10 开头的情况
+                if cnt:
+                    return False
+                if byte < 128:  # 表示一个字节的情况
+                    continue
+                elif byte < 224:  # 两个字节的情况
+                    cnt = 1
+                elif byte < 240:  # 三个字节的情况
+                    cnt = 2
+                elif byte < 248:  # 四个字节的情况
+                    cnt = 3
+                else:  # 其他情况均为 False
+                    return False
+        return cnt == 0  # 比较结束， cnt 必须为0 才是合法的
 
 s=Solution()
 test=[
-{"input":[197,130,1], "output":True},
+{"input":[197,197,1], "output":True},
 
 ]
 
