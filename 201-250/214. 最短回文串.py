@@ -1,17 +1,14 @@
 class Solution:
     def shortestPalindrome(self, s):
-        print(len(s))
-        print(s.find('c'))
-        print(s.find('d'))
+        size=len(s)
         tmp=[a for a in s]
-        print(tmp)
         tmp.reverse()
         tmp=''.join(tmp)
         if tmp==s:
             return s
         i=0
         for i in range(len(tmp)):
-            if s.find(tmp[i:])==0:
+            if s[:size-i]==tmp[i:]:
                 break
         return tmp[0:i]+s
 
