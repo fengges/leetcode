@@ -1,4 +1,3 @@
-
 class Solution:
     def triangleNumber(self, nums):
         num=0
