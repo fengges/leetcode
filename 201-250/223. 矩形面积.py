@@ -1,22 +1,28 @@
 
 class Solution:
     def computeArea(self, A, B, C, D, E, F, G, H):
-        if (C-A)*(D-B)<(G-E)*(H-F):
-            A, B, C, D, E, F, G, H=  E, F, G, H,A, B, C, D
-        flag1=False
-        flag2=False
-        if E>=A and E<=C and F>=B and F<=D:
-            flag1=True
-        if G>=A and G<=C and H>=B and H<=D:
-            flag2=True
-        if flag1 and flag2:
-            return (C-A)*(D-B)+(G-E)*(H-F)-(C-A)*(D-B)
-        elif flag1:
-            return (C-A)*(D-B)+(G-E)*(H-F)-(C-E)*(D-F)
-        elif flag2:
-            return (G - A) * (H - B)
+        total= (D-B)*(C-A) + (H-F)*(G-E)
+        if H < B or F > D or G < A or C < E:
+            return total
+        if H > D:
+            y1 = D
         else:
-            return (C-A)*(D-B)+(G-E)*(H-F)
+            y1 = H
+        if B < F :
+            y2 = F
+        else :
+            y2 = B
+        y = abs(y1 - y2)
+        if E < A :
+            x1 = A
+        else :
+            x1 = E
+        if C < G :
+            x2 = C
+        else :
+            x2 = G
+        x = abs(x1 - x2)
+        return total - x*y
 
 s=Solution()
 test=[

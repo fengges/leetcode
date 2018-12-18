@@ -1,13 +1,12 @@
 class Solution:
     def nextGreaterElements(self, nums):
-
-        r=[]
-        r.index()
-        for n in range(len(nums)):
-            r.append(self.find(n,nums))
-        return r
-    def find(self,index,nums):
-        for i in range(1,len(nums)):
-            if nums[(i+index)%len(nums)]>nums[index]:
-                return nums[(i+index)%len(nums)]
-        return -1
+        res=[-1 for n in nums]
+        s=[]
+        size=len(nums)
+        for i in range(size*2):
+            j=i%size
+            while len(s)!=0 and nums[s[-1]]<nums[j]:
+                res[s[-1]]=nums[j]
+                s.pop()
+            s.append(j)
+        return res
