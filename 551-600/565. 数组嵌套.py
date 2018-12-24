@@ -1,8 +1,10 @@
+from util.link import ListNode
 class Solution(object):
     def arrayNesting(self, nums):
-        dic={}
+        dic=[]
         flag=[True for i in nums]
-        for i in range(len(nums)):
+        flag[0]=False
+        for i in range(1,len(nums)):
             if flag[i]:
                 dic[nums[i]]=[nums[i]]
                 while True:
