@@ -1,16 +1,11 @@
 class Solution:
     def maxChunksToSorted(self, arr):
-        tmp=[a for a in arr]
-        tmp.sort()
-        flag=[arr[i]==tmp[i] for i in range(len(arr))]
         r=0
-        find=True
-        for f in flag:
-            if f:
-                r += 1
-                find=True
-            elif find:
-                find=False
+        m=0
+        for i in range(len(arr)):
+            m=max(m,arr[i])
+            if m==i:
+                r+=1
         return r
 s=Solution()
 test=[

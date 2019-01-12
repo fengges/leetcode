@@ -1,5 +1,5 @@
 def buildSmallHeap(num):
-    for i in range(int(len(num)/2),0,-1):
+    for i in range(int(len(num)/2),-1,-1):
         adjust(num, i)
 def adjust(array,i):
     temp = array[i]
@@ -15,3 +15,8 @@ def adjust(array,i):
             i = k
         k*=2
     array[i] = temp
+
+if __name__=="__main__":
+    test=[5,9,8,4,6,2,1,8,0,5]
+    buildSmallHeap(test)
+    print(test)

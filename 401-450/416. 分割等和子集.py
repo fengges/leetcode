@@ -1,4 +1,7 @@
 class Solution:
+
+    def canPartition(self, nums):
+        return self.findTargetSumWays(nums,0)>0
     def findTargetSumWays(self, nums, S):
         sum_nums = sum(nums)
         if sum_nums < S or (S + sum_nums) % 2 != 0:
@@ -10,14 +13,3 @@ class Solution:
             for i in range(target, num - 1, -1):
                 mem[i] += mem[i - num]
         return mem[target]
-
-
-s=Solution()
-test=[
-{"input":[[1, 1, 1, 1, 1],3], "output":5},
-
-]
-for t in test:
-    r=s.findTargetSumWays(t['input'][0],t['input'][1])
-    if r!=t['output']:
-        print("error:"+str(t)+" out:"+str(r))

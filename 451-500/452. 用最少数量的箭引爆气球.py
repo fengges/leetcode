@@ -1,29 +1,18 @@
 class Solution:
     def findMinArrowShots(self, points):
-        dic={}
-        for p in points:
-            for x in range(p[0],p[1]+1):
-                if x not in dic:
-                    dic[x]=[]
-                dic[x].append(p)
-        r=0
-        while True:
-            m=self.findMax(dic)
-            if m is None:
-                return r
-            r+=1
-            ps=[p for p in dic[m]]
-            for p in ps:
-                for x in range(p[0], p[1] + 1):
-                    dic[x].remove(p)
-    def findMax(self,dic):
-        m=None
-        for k in dic:
-            if m is None or len(dic[k])>len(dic[m]):
-                m=k
-        if len(dic[m])==0:
-            return None
-        return m
+        points.sort(key=lambda x:x[0])
+        size=len(points)
+        if size<2:
+            return size
+        r,start,end=1,points[0][0],points[0][1]
+        for i in range(1,size):
+            if points[i][0]>end:
+                start,end=points[i][0],points[i][1]
+                r+=1
+            else:
+                start,end=points[i][0],min(end,points[i][1])
+        return r
+
 s=Solution()
 
 test=[

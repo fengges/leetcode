@@ -1,23 +1,31 @@
+from heapq import *
 class MedianFinder:
     def __init__(self):
-        self.list=[]
-
+        self.minlist=[]
+        self.maxlist = []
     def addNum(self, num):
-        i=len(self.list)
-        self.list.append(num)
-        for j in range(i,-1,-1):
-            # j为当前位置，试探j-1位置
-            if num <self.list[j-1]:
-                self.list[j] = self.list[j-1]
-            else:
-                # 位置确定为j
-                break
-        self.list[j] = num
-
+        if num > self.findMedian():
+            heappush(self.maxlist, num)
+        else:
+            heappush(self.minlist, num)
+        len1, len2 = len(self.maxlist), len(self.minlist)
+        if len1<len2:
+            self.maxlist.append(self.minlist.pop())
+        elif len1>len2+1:
+            self.minlist.append(self.maxlist.pop())
 
     def findMedian(self):
-        size=len(self.list)
-        if size%2==0:
-            return (self.list[int(size/2)]+self.list[int(size/2)+1])/2
+        len1,len2=len(self.maxlist),len(self.minlist)
+        if len1+len2==0:
+            return 0
+        elif len1==len2:
+            return (self.minlist[-1]+self.maxlist[-1])/2
         else:
-            return self.list[int(size/2)]
+            return self.maxlist[-1]
+
+t=MedianFinder()
+t.addNum(1)
+t.addNum(2)
+print(t.findMedian())
+t.addNum(3)
+print(t.findMedian())
