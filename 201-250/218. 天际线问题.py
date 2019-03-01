@@ -12,15 +12,17 @@ class PrioQueue():
             self.buildheap()
 
     def remove(self, e):
-        self._elems.remove(e)
-        self.buildheap()
+        index=self._elems.index(e)
+        end = len(self._elems)
+        self._elems[index],self._elems[-1]=self._elems[-1],self._elems[index]
+        self.siftdown(self._elems[index], index,end-1)
+        return self._elems.pop()
     #生成堆的函数
     def buildheap(self):
         end = len(self._elems)
         #所有非叶节点，从后向前进行筛选排序
         for i in range(end//2, -1, -1):
             self.siftdown(self._elems[i], i, end)
-
 
     #向下筛选，使堆按顺序排列
     def siftdown(self,e,begin,end):
