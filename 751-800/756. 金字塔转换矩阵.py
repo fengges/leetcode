@@ -34,7 +34,6 @@ test=[
 {"input": ["XXYX",["XXX", "XXY", "XYX", "XYY", "YXZ"]], "output":False},
 {"input": ["XYZ",["XYD", "YZE", "DEA", "FFF"]], "output":True},
 ]
-
 for t in test:
     r=s.pyramidTransition(t['input'][0],t['input'][1])
     if r!=t['output']:

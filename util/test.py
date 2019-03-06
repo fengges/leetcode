@@ -1,145 +1,241 @@
-#最正确的版本，但是在没有搜索词的时候鼠标不会移动，应给是句柄位置的关系
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException,ElementNotVisibleException
-from selenium.webdriver import ActionChains
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import re
-import calendar
-import time
-import pyautogui
-import xlwt
+import  itchat
 import os
-from selenium.webdriver.common.keys import Keys
-#登录，输入关键词，最大化界面，选择全部日期
-def init_spider(keyword):
-    '''
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--headless")#设置chrome为headless模式
-    chrome_options.add_argument("--disable-gpu")
-    '''
-    url = 'http://index.baidu.com/'
-    chromePath = 'chromedriver.exe'  # Chromedriver的路径
-    #driver = webdriver.Chrome(chrome_options=chrome_options,executable_path=chromePath)  # 打开浏览器
-    driver = webdriver.Chrome(executable_path=chromePath)  # 打开浏览器
-    driver.get(url)  # 打开网站
-    cookieList = [{'domain': '.index.baidu.com', 'httpOnly': False, 'name': 'Hm_lpvt_d101ea4d2a5c67dab98251f0b5de24dc',
-                   'path': '/', 'secure': False, 'value': '1550887201'},
-                  {'domain': '.baidu.com', 'expiry': 1582423184.563163, 'httpOnly': False, 'name': 'BAIDUID',
-                   'path': '/', 'secure': False, 'value': '50C5105A44FDAF8B13979DA6BD118AFF:FG=1'},
-                  {'domain': '.index.baidu.com', 'expiry': 1582423201, 'httpOnly': False,
-                   'name': 'Hm_lvt_d101ea4d2a5c67dab98251f0b5de24dc', 'path': '/', 'secure': False,
-                   'value': '1550887185'},
-                  {'domain': '.baidu.com', 'expiry': 1810087199.519391, 'httpOnly': True, 'name': 'BDUSS', 'path': '/',
-                   'secure': False,
-                   'value': 'XY0SEw0Rmxjb2RLSXFLVVZlWElMVnlvRWFESERGaW1Va1NUVnczaHU1Z3ZOcGhjQVFBQUFBJCQAAAAAAAAAAAEAAACiCMtSaG91c2XB1rLosugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-pcFwvqXBca'},
-                  {'domain': 'index.baidu.com', 'expiry': 1550973600.889628, 'httpOnly': False, 'name': 'CHKFORREG',
-                   'path': '/', 'secure': False, 'value': '12d9ff823e2f294c2c403f8f6b435ca5'}]
-    for cookie in cookieList:
-        driver.add_cookie(cookie)
-    driver.get(url)
-    time.sleep(1)
-    driver.refresh()
-    # 第一次登录，将这两行取消注释，后三行进行注释
-    # 输入关键词并最大化界面
-    WebDriverWait(driver, 10, 0.5).until(
-        EC.element_to_be_clickable((By.XPATH, "//input[@class='search-input']")))
-    driver.find_element_by_xpath("//input[@class='search-input']").send_keys(keyword)
-    WebDriverWait(driver, 10, 0.5).until(
-        EC.element_to_be_clickable((By.XPATH, "//span[@class='search-input-cancle']")))
-    driver.find_element_by_xpath("//span[@class='search-input-cancle']").click()
-    driver.maximize_window()
+import csv
+import pandas as pd
+from pyecharts import Bar,Pie,Geo
+import shutil  as sh
 
-    HTMLdata = driver.page_source  # 获得页面代码
-    return driver
+# 根据index打印朋友的信息
+def print_Info(friends):
+    UserName = friends['UserName']
+    NickName = friends['NickName']
+    HeadImgUrl = friends['HeadImgUrl']
+    ContactFlag = friends['ContactFlag']
+    MemberCount = friends['MemberCount']
+    RemarkName = friends['RemarkName']
+    Sex = friends['Sex']
+    Province = friends['Province']
+    City = friends['City']
+    MemberCount=friends['MemberCount']
+    Signature=friends['Signature']
+
+    print('---------------UserInfo-------------')
+    print("UserName:", UserName)
+    print("NickName:", NickName)
+    print("HeadImgUrl:", HeadImgUrl)
+    print("ContactFlag:", ContactFlag)
+    print("MemberCount:", MemberCount)
+    print("RemarkName:", RemarkName)
+    print("Sex:", Sex)
+    print("Province:", Province)
+    print("City:", City)
+    print("MemberCount:", MemberCount)
+    print("Signature:", Signature)
+    print('---------------END-------------')
+
+    return
 
 
+# 统计打印男女的比例，并生成Pie.html
+def paint_CountScan(friends,nickName,path):
 
-#清除搜索框的值，并输入关键词，点击确定，得到关键词的搜索指数页面
-def second(driver,keyword):
-    time.sleep(0.05)
-    #将搜索框全选
-    driver.find_element_by_xpath('//*[@id="search-input-form"]/input[3]').send_keys(Keys.CONTROL,'a')
-    #将搜索框清除
-    driver.find_element_by_xpath('//*[@id="search-input-form"]/input[3]').send_keys(Keys.BACKSPACE)
-    #在关键词框框里输入关键词
-    driver.find_element_by_xpath('//*[@id="search-input-form"]/input[3]').send_keys(keyword)
-    #点击确定class="keyword-group__ok"
-    WebDriverWait(driver, 10, 0.5).until(
-        EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[1]/div/div[2]/div/div[1]/div/span/span')))
-    driver.find_element_by_xpath('/html/body/div[1]/div[1]/div/div[2]/div/div[1]/div/span/span').click()
-    # 打开页面后，将日期选为全部
-    time.sleep(0.5)
-    #for handle in driver.window_handles:  # 方法二，始终获得当前最后的窗口，操纵句柄
-        #driver.switch_to.window(handle)
-    # 点击日期选项按钮
-    WebDriverWait(driver, 10, 0.5).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, '//div[@class="index-dropdown-list"]/button/span[contains(text(), "近30天")] | //div[@class="index-dropdown-list"]/button/span[contains(text(), "全部")]')))
-    driver.find_element_by_xpath('//div[@class="index-dropdown-list"]/button/span[contains(text(), "近30天")] | //div[@class="index-dropdown-list"]/button/span[contains(text(), "全部")]').click()
-    # 点击选择全部日期
-    WebDriverWait(driver, 10, 0.5).until(
-        EC.element_to_be_clickable((By.XPATH, "/html/body/div[3]/div/div/div[6]")))
-    driver.find_element_by_xpath("/html/body/div[3]/div/div/div[6]").click()
-    time.sleep(0.5)
-    #driver.refresh()
-    # 选中搜索指数图形区域，同时鼠标在上面显示出来
-    WebDriverWait(driver, 10, 0.5).until(
-        EC.element_to_be_clickable(
-            (By.XPATH, "/html/body/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div/div[1]/canvas")))
-    driver.find_element_by_xpath(
-        "/html/body/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div/div[1]/canvas").click()
-    time.sleep(0.05)
-    return driver
+    # 其中1为男，2为女
+    male=female=other=0
+
+    for i in friends[1:]:
+        if i['Sex']==1:
+            male+=1
+        elif i['Sex']==2:
+            female+=1
+        else:
+            other+=1
+
+    total=len(friends[1:])
+
+    maleScan='{:.2%}'.format(male/total)
+    femaleScan='{:.2%}'.format(female/total)
+    otherScan='{:.2%}'.format(other/total)
+
+    print('---------------Scan-------------')
+    print('total:',total,'\tmale:',male,'\tfemale:',female,'\tother:',other)
+    print('maleScan:',maleScan)
+    print('femaleScan:',femaleScan)
+    print('otherScan:',otherScan)
+    print('---------------END-------------')
+
+    attr=['meal','female','other']
+    # data=[maleScan,femaleScan,otherScan]
+    data=[male,female,other]
+    pie=Pie("%s的Wechat男女分布比例"%nickName,background_color="#fff")
+    pie.add("Wechat",attr,data,is_label_show=True)
+    pie.show_config()
+    dir = r'%s\%s的Wechat男女分布比例.html' % (path, nickName)
+    pie.render(dir)
+
+    return dir
+
+# 根据自己的nickName创建对应的用户文件夹
+def createDir(filename):
+    try:
+        os.mkdir(filename)
+        print(filename,'文件夹创建成功')
+    except Exception as e:
+        print(e)
+        print(filename, '文件夹创建失败，可能已经存在该文件夹')
+    return
+
+# 数据清洗，提取需要的信息
+def get_UseInfo(friends):
+    # 读取信息
+    data = pd.DataFrame(friends)
+    userName = data['UserName']
+    nickName = data['NickName']
+    headImgUrl = data['HeadImgUrl']
+    contactFlag = data['ContactFlag']
+    memberCount = data['MemberCount']
+    remarkName = data['RemarkName']
+    sex = data['Sex']
+    province = data['Province']
+    city = data['City']
+    signature = data['Signature']
+    #
+
+    # 生成信息csv
+    info = {'userName': userName, 'nickName': nickName, 'remarkName': remarkName, 'sex': sex, 'province': province,
+            'city': city, 'signature': signature}
+    dataFrame = pd.DataFrame(info)
+    return dataFrame
+
+# dataFrame为提取后的信息格式，保存dataFrame信息
+def save_FriendsCsvFile(dataFrame,fileName,path):
+    # 存储信息csv
+    dir=r'%s\%s的朋友信息表.csv'%(path,fileName)
+    dataFrame.to_csv(dir,sep=',')
+    return dir
+
+# dataFrame为提取后的信息格式
+# 统计所在城市的信息，并保存下来
+def save_CountCityCsvFile(dataFrame,fileName,path):
+    count = dataFrame['nickName'].groupby(dataFrame['city']).count()
+    city=pd.DataFrame(count[1:])
+    dir = r'%s\%s的朋友所在城市统计表.csv' % (path, fileName)
+    city.to_csv(dir)
+    return  dir
+
+# 根据城市的信息CSV文件，画出Bar,Pie图
+def paint_CountCityCsvFile(cityPath,nickName,path):
+    file = open(cityPath, 'r', encoding='utf-8')
+    # 使用csv.reader读取csvfile中的文件
+    csvFile=csv.reader(file)
+    # 读取第一行每一列的标题
+    header=next(csvFile)
+    # 将csv 文件中的数据保存到data中
+    city=[]
+    count=[]
+    for i in file:
+        temp=i.split(',')
+        city.append(temp[0])
+        count.append(temp[1])
+
+    # 画图
+    # 柱状图
+    bar = Bar("%s的朋友城市分布表" % nickName, "Data from WeChart", background_color="#fff",width=1600,height=600)
+    bar.add("City", city, count,xaxis_label_textsize=12,xaxis_rotate=30)
+    bar.show_config()
+    dir_Bar = r'%s\%s的朋友城市分布表Bar.html' % (path, nickName)
+    bar.render(dir_Bar)
+
+    # 饼状图
+    pie=Pie("%s的朋友城市分布表" % nickName, "Data from WeChart", background_color="#fff",width=1500,height=800,title_top=80,title_text_size=20)
+    pie.add("City", city, count,  is_label_show=True,radius=[0,60])
+    pie.show_config()
+    dir_Pie = r'%s\%s的朋友城市分布表Pie.html' % (path, nickName)
+    pie.render(dir_Pie)
+
+    dir=[dir_Bar,dir_Pie]
+    return dir
+
+def copyPKL(nickName):
+    list=os.listdir()
+    for i in list:
+        if i=='itchat.pkl':
+            try:
+                sh.copyfile('itchat.pkl',r'.\%s\itchat.pkl'%nickName)
+            except Exception as e:
+                print('%s文件夹不存在'%nickName)
+    return
+
+def add_ReplaceDir(dir,dirData):
+    defType=[type('str'),type(['str','str'])]
+    if type(dir)== defType[0]:
+        dirData.append(dir)
+    elif type(dir)==defType[1]:
+        for i in dir:
+            dirData.append(i)
+    else:
+        print(dir,'的类型是',type(dir),'不是指定的类型',defType[0],defType[1])
+    return dirData
+
+#根据提供的路径替换指定HTML中的标题
+def replace_Title(filePath):
+    content = []
+    try:
+        for file in filePath:
+            title=file.split('\\')[-1].split('.')[0]
+            with open(file, 'r', encoding='Utf-8') as f:
+                content = f.readlines()
+            f.close()
+
+            content[4] = '    <title>%s</title>\n' % title
+            # for i in range(0,5,1):
+            #     print(content[i])
+
+            f = open(file, 'w', encoding='utf-8')
+            for j in content:
+                f.write(j)
+            f.close()
+
+    except Exception as  e:
+        print(filePath,'不存在')
+
+    return
+
+if __name__=="__main__":
+    # 登录
+    itchat.auto_login(hotReload=True)
+    friends=itchat.get_friends(update=True)
+    # 打印自己的信息
+    user=friends[0]
+    print_Info(user)
+
+    # 创建用户文件夹
+    nickName=user['NickName']
+    createDir(nickName)
+    copyPKL(nickName)
+    path='.\%s'%nickName
+
+    # 获取想要的数据
+    friends = itchat.get_friends(update=True)
+    data=get_UseInfo(friends)
+
+    #要替换得title的HTML文件
+    reHtmlDir=[]
+
+    # 画出男女比例图
+    print('----------------画出男女比例图------------')
+    dir=paint_CountScan(friends, nickName, path)
+    reHtmlPath=add_ReplaceDir(dir,reHtmlDir)
+    print('----------------END------------')
 
 
+    # 画出城市统计图
+    print('----------------画出男女比例图------------')
+    dir=save_FriendsCsvFile(data,nickName,path)
+    cityFilePath=save_CountCityCsvFile(data,nickName,path)
+    dir=paint_CountCityCsvFile(cityFilePath,nickName,path)
+    reHtmlPath = add_ReplaceDir(dir, reHtmlDir)
+    print('----------------END------------')
 
-firstword='北汽新能源'
-driver = init_spider(firstword)
-#创建要写入的EXCEL
-file='奥迪1'+'.xls'
-f=xlwt.Workbook()
-sheet1=f.add_sheet(u'sheet1',cell_overwrite_ok=True)#创建sheet
-#写入日期
-#获取每个车型
-#brand_url = 'D:/Python/pythonproject/SpiderbaiduIndex-python-master/car-brand-chinese/' + '奥迪' + '.txt'
-#fileOfBrand = open(brand_url, 'r').read()
-#brand_list = fileOfBrand.split(',')
-#brand_list = list(brand_list)#获取了每个车型的名字的列表
-brand_list=['奥迪','宝马','奔驰','大众']
-j=1
-for car in range(0, len(brand_list)):
-            #开始访问每个车型
-            if len(brand_list[car]) != 0:#如果这个名字不为空，就继续以下步骤
-                keyword=brand_list[car]
-                i = 0
-                browser = second(driver, keyword)  # 在页面输入关键词
-                # for handle in browser.window_handles:  # 方法二，始终获得当前最后的窗口，操纵句柄
-                #     browser.switch_to.window(handle)
-                for x in range(400, 500, 2):  # 移动鼠标,最左边开始是63，最右边结束是1261
-                    i = i + 1
-                    # time.sleep(2)
-                    pyautogui.moveTo(x, 600)  # 鼠标滑动到这个位置
-                    # browser.refresh()
-                    time.sleep(0.01)
-                    if j == 1:
-                        title1 = 'data'
-                        sheet1.write(0, 0, title1)
-                        # 获取时间，数据类型为字符串
-                        date = browser.find_element_by_xpath(
-                                "/html/body/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div/div[2]/div[1]").get_attribute('textContent')
-                        sheet1.write(i, 0, date)
-                            # print(data)
-                            # 获取搜索量，数据类型为字符串
-                    search = browser.find_element_by_xpath("html/body/div[1]/div[2]/div[2]/div[2]/div[2]/div[1]/div[3]/div[1]/div[1]/div/div[2]/div[2]/div[2]").get_attribute('textContent')
-                    search = search.strip()
-                    ##print('--------------')
-                    sheet1.write(i, j, search)
-                #except TimeoutException:
-                    #print('---------------------------' + keyword + '未能读取信息')
-                sheet1.write(0, j, str(keyword))#写入标题
-                f.save(file)  # 保存文件
-                j = j + 1
-                print('-------------------' + keyword + '已爬完')
-                #browser.delete_all_cookies()
+    # 替换标题
+    print(reHtmlDir)
+    replace_Title(reHtmlPath)
