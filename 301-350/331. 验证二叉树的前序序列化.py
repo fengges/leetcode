@@ -5,39 +5,48 @@ class TreeNode:
         self.right = None
 class Solution:
     def isValidSerialization(self, preorder):
-        """
-        :type preorder: str
-        :rtype: bool
-        """
-
-    def preOrderNonRec(self,Node):
-        if Node == None:
-            return
-        # 用数组当栈
-        stack = []
-        while Node or stack:
-            while Node:
-                # 从根节点开始，一直找它的左子树
-                print(Node.val)
-                # 将右子树压入栈中
-                stack.append(Node)
-                # 一直往下找左子树
-                Node = Node.left
-            # while结束表示当前节点Node为空，即前一个节点没有左子树了
-            # 栈中开始弹出上右子树，再重复前面步骤
-            Node = stack.pop()
-            Node = Node.right
-
+        tmp=preorder.split(',')
+        stack=[TreeNode(tmp[0])]
+        start=1
+        while start<len(tmp):
+            if tmp[start]=='#':
+                node=TreeNode(tmp[start])
+                if self.add(stack,node)==False:
+                    return False
+            else:
+                stack.append(TreeNode(tmp[start]))
+            start += 1
+        return len(stack)==1 and self.judge(stack[0])
+    def judge(self,node):
+        if node is None:
+            return False
+        if node.val=="#":
+            return node.left is None and node.right is None
+        return self.judge(node.left) and self.judge(node.right)
+    def add(self,stack,node):
+        if len(stack)==0:
+            stack.append(node)
+            return True
+        t = stack.pop()
+        if t.left is None:
+            t.left = node
+            stack.append(t)
+            return True
+        elif t.right is None:
+            t.right = node
+            return self.add(stack,t)
+        else:
+            return False
 
 
 s=Solution()
 
 test=[
-{"input":["123",6],"output": ["1+2+3", "1*2*3"] },
-{"input":["105",5],"output": ["1+2+3", "1*2*3"] },
-
+{"input":"1,#,#,#,#","output":False },
+{"input":"9,3,4,#,#,1,#,#,2,#,6,#,#","output":True },
+{"input":"1","output":False },
 ]
 for t in test:
-    r=s.addOperators(t['input'][0],t['input'][1])
+    r=s.isValidSerialization(t['input'])
     if r!=t['output']:
         print("error:"+str(t)+" out:"+str(r))
