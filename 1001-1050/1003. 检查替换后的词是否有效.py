@@ -1,15 +1,13 @@
 class Solution:
     def isValid(self, S):
-        tmp=[0,0,0]
+        stack=[]
         for s in S:
-            if s=="a":
-                tmp[0]+=1
-            elif s=='b':
-                tmp[1]+=1
-                if tmp[0]<tmp[1]:
+            if s=="c":
+                if len(stack)>=2 and stack[-1]=='b' and stack[-2]=='a':
+                    stack.pop()
+                    stack.pop()
+                else:
                     return False
             else:
-                tmp[2]+=1
-                if tmp[0]<tmp[2] or tmp[1]<tmp[2]:
-                    return False
-        return True
+                stack.append(s)
+        return len(stack)==0
