@@ -1,6 +1,6 @@
 class Solution:
     def findLengthOfLCIS(self, nums):
-        # 首先判断数组长度是0，如果是0，那么最长联系的当然是0
+    # 首先判断数组长度是0，如果是0，那么最长联系的当然是0
         # if (nums.Count==0)
         if len(nums)==0:
             return 0

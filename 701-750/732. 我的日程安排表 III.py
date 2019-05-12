@@ -29,6 +29,7 @@ class MyCalendarThree:
                 i+=1
         # print(1)
         return max([a[2] for a in self.list])
+
 # s=MyCalendarThree()
 #
 # test=[
@@ -46,7 +47,7 @@ class MyCalendarThree:
 
 
 null=None
-s=MyCalendarThree()
+# s=MyCalendarThree()
 test=[
     {"input": {
         'function': ["MyCalendarThree","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book","book"],
@@ -60,7 +61,6 @@ test=[
         },
         "output": [null,1,1,1,1,1,2,2,2,3,3,3,4,5,5,5,5,5,5,6,6,6,6,6,6,7,7,7,7,7,7]
     },
-
 ]
 def getCode(function,param,name):
 
@@ -69,7 +69,7 @@ for t in test:
     function=t['input']['function']
     parm=t['input']['parm']
     output = t['output']
-    obj=eval(getCode(function[0],parm[0],""))
+    obj=eval(getCode(function[0],parm[0],"parm[0]"))
     for i in range(1,len(function)):
         r=eval("obj."+getCode(function[i], parm[i],'parm[i]'))
         if r!=output[i]:

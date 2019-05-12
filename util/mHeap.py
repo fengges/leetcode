@@ -173,14 +173,20 @@ class PrioQueue2():
     """
 
     #初始化生成一个优先队列堆
-    def __init__(self,cmp,elist=[]):
+    def __init__(self,cmp=None,elist=[]):
         self._elems = list(elist)
         #初始化时，对数据进行排序
-        self.cmp=cmp
+        if cmp:
+            self.cmp=cmp
+        else:
+            def cmp(a,b):
+                return a>b
+            self.cmp=cmp
+
+
         # 1是最小堆 -1是最大堆
         if elist:
             self.buildheap()
-
 
     #生成堆的函数
     def buildheap(self):

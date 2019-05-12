@@ -1,24 +1,46 @@
+import functools
+def cmp(a,b):
+    if a[0]==b[0]:
+        return b[1]-a[1]
+    else:
+        return a[0]-b[0]
+
 class Solution:
     def maxEnvelopes(self, envelopes):
         if len(envelopes)==0:
             return 0
-        nums=sorted(envelopes, key=lambda x:x[0])
-        size = len(nums)
-        res = []
-        for i in range(size):
-            for r in res:
-                if r[0]<nums[i][0] and r[1]<nums[i][1]:
-                    res.append([nums[i][0], nums[i][1], r[2]+1])
-            res.append([nums[i][0],nums[i][1],1])
-        return max([r[2] for r in res])
+        envelopes.sort( key=functools.cmp_to_key(cmp))
+        nums=[e[1] for e in envelopes]
+        return self.lengthOfLIS(nums)
+
+    def lengthOfLIS(self, nums):
+        tails = [0] * len(nums)
+        size = 0
+        for x in nums:
+            i, j = 0, size
+            while i != j:
+                m = (i + j) // 2
+                if tails[m] < x:
+                    i = m + 1
+                else:
+                    j = m
+            tails[i] = x
+            size = max(i + 1, size)
+        return size
+
+
+
 s=Solution()
 
 test=[
-{"input": [[8,3],[3,20],[15,5],[11,2],[19,6],[9,18],[1,19],[13,3],[14,20],[6,7]],"output":4},
 {"input": [[4,5],[4,6],[6,7],[2,3],[1,1]],"output":4},
+{"input": [[5,4],[6,4],[6,7],[2,3]],"output":3},
+{"input": [[15,22],[8,34],[44,40],[9,17],[43,23],[4,7],[20,8],[30,46],[39,36],[45,14],[24,19],[24,36],[31,34],[32,19],[29,13],[16,48],[8,36],[44,2],[11,5],[2,50],[29,6],[18,38],[15,49],[22,37],[6,20],[25,11],[1,50],[19,40],[45,35],[37,21],[4,29],[40,5],[4,49],[1,45],[14,32],[14,37],[23,22],[31,21],[2,36],[43,4],[21,32],[41,2],[44,32],[36,20],[22,45],[3,41],[44,29],[29,33],[42,2],[38,17],[43,26],[30,15],[28,12],[33,30],[49,7],[8,14],[1,9],[41,25],[7,15],[26,32],[11,33],[12,45],[33,7],[16,34],[39,1],[20,49],[50,45],[14,29],[50,41],[1,45],[14,43],[49,20],[41,37],[43,22],[45,19],[20,21],[28,19],[2,1],[7,49],[3,3],[49,48],[34,35],[10,2]],"output":16},
+{"input": [[8,3],[3,20],[15,5],[11,2],[19,6],[9,18],[1,19],[13,3],[14,20],[6,7]],"output":4},
+
 
 {"input": [[2,1],[4,1],[6,2],[8,3],[10,5],[12,8],[14,13],[16,21],[18,34],[20,55]],"output":9},
-{"input": [[5,4],[6,4],[6,7],[2,3]],"output":3},
+
 ]
 for t in test:
     r=s.maxEnvelopes(t['input'])
