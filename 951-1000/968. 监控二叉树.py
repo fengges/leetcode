@@ -1,33 +1,16 @@
 from util.tree import *
 class Solution:
-    def minCameraCover2(self, root):
-        a = self.find(root.left, True) + self.find(root.right, True)
-        b = self.find(root.left, False) + self.find(root.right, False)
-        t=min(a + 1, b)
-        if t==0:
-            return 1
-        else:
-            return t
-    def find(self,root,father):
-        if not root:
-            return 0
-        if father:
-            a = self.find(root.left, True) + self.find(root.right, True)
-            b=self.find(root.left,False)+self.find(root.right,False)
-            return min(a+1,b)
-        else:
-            a = self.find(root.left, True) + self.find(root.right, True)
-            return a+1
 
     def minCameraCover(self,root):
         self.ans=0
         if root is None:
             return 0
         if self.dfs(root) == 2:
-            self.ans=+1
+            self.ans+=1
         return self.ans
 
     def dfs(self,node):
+        # 0 安装监视器，2 没被监视， 1 被监视
         if node is None:
             return 1
         left = self.dfs(node.left)
@@ -42,6 +25,7 @@ class Solution:
 s=Solution()
 null=None
 test=[
+{"input":deserialize([0,null,0,null,0,null,0]),"output": 2},
 {"input":deserialize([0,0,null,null,0,0,null,null,0,0]),"output": 2},
 {"input":deserialize([0]),"output": 1},
 {"input":deserialize([0,0,null,0,0]),"output": 1},
