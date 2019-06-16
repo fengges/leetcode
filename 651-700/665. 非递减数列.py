@@ -17,8 +17,8 @@ class Solution:
 
 s = Solution()
 test = [
+{"input": [-1,4,2,3], "output": True},
 {"input": [1,2,4,5,3], "output": True},
-{"input": [2,3,3,2,4], "output": True},
 {"input": [2,3,3,2,4], "output": True},
 {"input": [3,4,2,3], "output": False},
 {"input": [1,5,4,6,7,10,8,9], "output": False},
