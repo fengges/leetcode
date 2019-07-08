@@ -1,6 +1,27 @@
 from util.tree import *
 class Solution:
+
     def rob(self, root):
+        if root is None:
+            return 0
+        left = 0
+        right = 0
+        leftSon = 0
+        rightSon = 0
+        if root.left:
+            left = self.rob(root.left)
+            if (root.left.left):
+                leftSon = self.rob(root.left.left)
+            if (root.left.right):
+                leftSon += self.rob(root.left.right)
+        if root.right:
+            right = self.rob(root.right)
+            if root.right.left:
+                rightSon = self.rob(root.right.left)
+            if root.right.right:
+                rightSon += self.rob(root.right.right)
+        return max(root.val + leftSon + rightSon, left + right)
+    def rob2(self, root):
         if root is None:
             return 0
         return self.minCameraCover(root)

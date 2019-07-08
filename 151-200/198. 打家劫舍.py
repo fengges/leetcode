@@ -5,10 +5,10 @@ class Solution:
             flag[i+2]=max(flag[i]+nums[i],flag[i+1])
         return flag[-1]
         # return self.find(0,nums)
-    def find(self,s,nums):
-        if s>=len(nums):
-            return 0
-        return max(self.find(s+2,nums)+nums[s],self.find(s+1,nums))
+    # def find(self,s,nums):
+    #     if s>=len(nums):
+    #         return 0
+    #     return max(self.find(s+2,nums)+nums[s],self.find(s+1,nums))
 
 s=Solution()
 test=[
