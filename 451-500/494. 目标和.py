@@ -14,7 +14,7 @@ class Solution:
 
 s=Solution()
 test=[
-{"input":[[1, 1, 1, 1, 1],3], "output":5},
+{"input":[[5,5,10,2,3],15], "output":5},
 
 ]
 for t in test:

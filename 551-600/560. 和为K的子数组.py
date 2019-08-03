@@ -12,6 +12,7 @@ class Solution:
 
 s = Solution()
 test = [
+{"input": [[5,5,10,2,3],15], "output": 4},
     {"input": [[0,0,0,0,0,0,0,0,0,0], 0], "output": 0},
     {"input": [[1],0], "output": 0},
     {"input": [ [1,1,1],2], "output":2},
