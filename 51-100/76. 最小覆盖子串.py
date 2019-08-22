@@ -1,6 +1,5 @@
 class Solution:
     def minWindow(self, s, t):
-
         srcHash = [0 for i in range(256)]
         for t1 in t:
             srcHash[ord(t1)]+=1
@@ -30,12 +29,9 @@ class Solution:
         return  s[begin:end+1]
 
 s=Solution()
-
 test=[
-{"input":["ab","a"],"output":"a"},
-{"input":["ADOBECODEBANC","ABC"],"output":"BANC"},
-
-
+    {"input":["ab","a"],"output":"a"},
+    {"input":["ADOBECODEBANC","ABC"],"output":"BANC"},
 ]
 for t in test:
     r=s.minWindow(t['input'][0],t['input'][1])

@@ -1,89 +1,42 @@
-class Node:
-    def __init__(self,val):
-        self.val=val
-        self.child=[None for i in range(26)]
-        self.flag=False
-    def insert(self,word):
-        if len(word)>0:
-            tmp=self.child[self.count(word[0])]
-            if tmp is None:
-                tmp=Node(word[0])
-                tmp.insert(word[1:])
-                self.child[self.count(word[0])]=tmp
-            else:
-                tmp.insert(word[1:])
-        else:
-            self.flag=True
-    def count(self,char):
-        return ord(char)-ord('a')
-class Trie:
-    def __init__(self):
-        self.node=Node(None)
-    def count(self,char):
-        return ord(char)-ord('a')
-    def insert(self, word):
-        self.node.insert(word)
 
-    def search(self, word):
-        tmp=self.find(self.node.child,word)
-        if tmp:
-            return tmp.flag
-        return False
-    def find(self,nodes,word):
-        tmp=nodes[self.count(word[0])]
-        if tmp is None:
-            return None
-        if len(word)==1:
-            return tmp
-        else:
-            return self.find(tmp.child,word[1:])
-    def findWord(self,nodes,prefix,res):
-        for n in nodes:
-            if n:
-                if n.flag:
-                    res.append(prefix+n.val)
-                self.findWord(n.child,prefix+n.val,res)
-
-    def startsWith(self, prefix):
-        return self.find(self.node.child,prefix)!=None
-    def getStartWith(self, prefix):
-        if len(prefix)!=0:
-            last=self.find(self.node.child, prefix)
-        else:
-            last=self.node
-        if last:
-            res=[]
-            self.findWord(last.child,"",res)
-            for i in range(len(res)):
-                res[i]=prefix+res[i]
-            if last.flag:
-                res.append(prefix)
-            return res
-        return []
 class Solution:
     def palindromePairs(self, words):
-        tree=Trie()
-        for w in words:
-            w1=w[::-1]
-            tree.insert(w1)
-        r=[]
 
-        for i,w in enumerate(words):
-            tmp=tree.getStartWith(w)
-            for t in tmp:
-                word=t[::-1]
-                if self.judge(w+word):
-                    index=words.index(word)
-                    if index!=i:
-                        r.append([i,index])
-        return r
+        res =[]
+        dict ={w:i for i,w in enumerate(words)}
+        for index in range(len(words)):
 
+            word = words[index]
+            if word=="":
+                continue
+            isPalindrome = self.judge(word)
+            if isPalindrome and "" in dict:
+                res.append([dict[""],index])
+                res.append([index,dict[""]])
+            rev="".join(word[::-1])
+            if  not isPalindrome and rev in dict:
+
+                res.append([index,dict[rev]])
+            for i in range(1,len(word)):
+
+                wordLeft = word[0:i]
+                wordRight = word[i:]
+
+                tmp="".join(wordRight[::-1])
+                tmp2 = "".join(wordLeft[::-1])
+                if self.judge(wordLeft) and tmp in dict:
+                    res.append([dict[tmp],index ])
+                if self.judge(wordRight) and tmp2 in dict:
+                    res.append([index,dict[tmp2] ])
+        return res
     def judge(self,word):
         return word[::-1]==word
 
 s=Solution()
 test=[
-{"input": ["a",""], "output":[] },
+{"input":["cabdacacfdgbdecggfdd","addiheabijijha","bafahgecejbfehjbihbj","fhicddafhbbjcj","cbjbcdchjjaf","hadhab","dhbjccchhha","jadgaccdbge","ed","ig","fh","ajjhibafff","afeaaiedegdb","ebfhiebjdfjefchfabb","cdbeeacebgd","aahcjd","cjeh","biecicfeecifhe","j","bbfbfhh","gbceejhc","hebjgfbj","ihhagfcjc","cfhcf","iahiafhedffhafhj","jjjbfhjcac","hhhbbgbbjifbcjibjhg","eiieafjheaegfe","bch","bddfbea","dfbg","aeeadcgheagca","bjej","iddbbhaba","fgibjjegb","ehaaigdahjdhbigijdf","jcdghicbjfhghchgjc","bj","aibaiec","fbjidghciaahgi","heaga","cjiiedciffha","hcd","gbbigeicgbdfejddje","gjcdccfchchjjiacjj","hddceefacddbgjdae","aaeijgicgiebchjdai","ahf","b","gihaiegheha","bfifedadbig","eijfcjfcff","fjdjb","bciidebhfgbfihd","bi","gibefcgdjdjhgaajifa","jjiihieifhcdagdg","jjdfeabjghadgijj","bdjihibcfbi","jjgigfgi","agfihdcfhfehfjabhcf","ahfadffgdhcigfhfh","bbcjjhjfhchbjggdfej","efghggfjhdbcgga","ahjfaaahggahdacabi","adabgbde","ib","fagjibagdacjhde","ichbhhjga","gjjdggagdaieafb","haiaejbfbcachhjdaj","jfaeihdbfifa","gd","jjfgcbjfbgcdcc","ffje","cehddacei","diiheg","ecdefcbihcjhe","bfdhafchbfffjjggdjb","ceedbjdhahaeagdjjhhc","hichhafiiabbhf","gffjeggaiccdafgcaa","icghei","badhahbaibghejh","dcjgdjgehfifgajj","gaji","haidia","dghffggeaeddgfb","fgjjaeaje","bigjffjiffjhbfbhfia","dbgb","gfibedaihdhibhi","hejfeacc","fejibeejf","i","d","jecff","bbacedehjjefgbaeg","aebidej","hbacbdibiaehfce","gfiaaccb","fcecgahjg","cf","gbdja","giigcbgdgdgfejcgcica","daaaadhffgbaac","eibgahcbij","ah","acfhgjjdbfhiafaajj","aabhaihfcjc","jhg","bbfjebgde","jafdheefcdjjffb","ijhjhaffgef","ejbfjdi","hjcabjdf","gbdgeahibbach","bhfcffdhiihifeacageh","giieef","cbhhijbdidceiee","jjgbeadcahdahi","iadjfge","edeeciaaihichd","gjiiac","h","edieacjieghfdja","ddefahibbjhjiba","fcgegeijigcbbagigce","jecbd","biiac","fgjhbhgdifcig","ghjageidjfghgi","fdeediahjeijj","bicjbejfjaghbahgdgih","ba","beihcfjgc","cccfijfdbjeciih","dfjfiafjbf","icdfdihjhfbif","acghidhcidie","jeeiifbhheggj","cjbgacfjfidfcccbfaa","jbgccddcfifbb","ageffh","ejjb","caffifihdggdjcbdhjcd","eidjfafbfdbgjej","bfibaeachgidhabhjcg","edgjbbachggggbjii","ijhbjfha","efbcghbagbiijhcgcj","efgdgeg","cbdfbcejddddiejfchjd","gefhabdgdfeehidf","giffa","g","jigjfidfhcfabhgi","ejhjfhghbcfffg","ihcecejfgg","gjgggihaedjfebgbab","idiaeejeaadj","cigciafhcjihbbagd","daahg","jddifffjibgjb","dbgdigbbdege","debdhcjgeehaafdaag","echhggeajafefhfhg","ihgcgfdiagdbhfic","ghdhgfjfgiagidfjbjce","gibaaf","iagajiahjhafiec","heg","jifedfe","faadahhaeiaebfa","bfafbefbbgdeah","cjfjfe","dejafddhaghb","fdbhjjacijj","bcjbfdcfjcagcbiaj","igeg","hgabjeffcijjbhehea","gh","fdfhhj","hhbbhceaeccbdgf","gdbdafbhgeagdhbe","fiehjfdg","hdghhjgggehgfcdcibi","gdcbcd","ccacfe","igfieb","cadggeagjbdccacgegj","bgdbjbdbegdgifh","ahga","fiagjahchcbdcbbbb","hdebdidifgiicj","efeiadihdfiijbbhah","afdeigcc","hjhefjfgfiihaj","hec","faabebbdjhicdhaab","iccchhijgcefgjghfb","aghehcbjbfb","agfdif","bdiijgfhhddjcegaehe","f","fhfjiijegbdcdibacc","bhcfcb","fdfhagd","cgfggghdbcahfdcbffii","bcdajbachdebaffijhhg","jbhagh","jcdjjaaehgddafiec","bibjc","baecdgifjjbic","geiahghbfege","a","dd","ecfhfeb","caijcghb","hgfcaejicjijgihidbj","iaghfgabehfje","ffjahgjgebfbfbigiih","gbecibgfgagah","jd","fbefdjfg","fhhdbfadfajaadcd","jf","hdjec","dbjecjedjdjfdcc","ih","bdhfbfgdcjgfh","dicbgacjeigbi","cddgfhge","aadafgbbbibc","ga","hbgjacecfahgeagghi","gjedafcigcbahacjagb","jgdcaijbgdci","fhhcfh","iabhf","ghfddagbhhdgbbj","caffddgeciahhgegidjf","ceageaidaieijehiia","ghejgdcehjcg","jbibdbjjejdi","ihafehfcff","ibfgd","ajeidijefecaeied","ceccffecehfihg","geidh","fcdgdeihecehdcf","gia","jjjahfdiajbfjfibh","hhi","aiidgibccecdgag","ecjecgjghe","agfhg","egibegj","hicfdcjidda","gdjaeeciaeiijhj","eajjgcejeigbehj","eii","hgedehfd","ijecbbcaebibfeiedie","baaecgfigecbg","eacabihif","ciechhfgcebfjiddbj","jeggedahfijieefehhhb","cgaagbafj","cifecafidcjc","dh","acbcccdjcgehbf","gabd","cehaaaibhge","hgeicaiaheceecjdh","dhgafa","acachjdahegdehhhjce","gfcfffifc","baehbagcfjidf","iefhefibfhiagfhjigi","ddbff","cbdhhgaiaicdfgdceijj","igfhjiicciahhgc","bddciecbfgd","djdbfhhhiiggbffjdah","aiajgdjdic","jdfebicedjjfb","abcghaaef","jjaafijhdgechfbjdacg","abhebjj","ibfiajcbjgjgiehf","fegfbdgbefgajaba","hba","aijigjjajbi","acebghfejjgadfcfd","baejiddfd","ibccejb","fchjibgfgdgcccbdiiba","hghbeggdjiaebd","gjadjehabcjh","igfghcjicc","hdeih","efhdhecbfg","ifjbfbhfbfg","jfeedficjbbei","dibjdbjg","diaigje","hd","afbd","iedbdfc","bih","ficaebjfj","ddhcjhcbichf","hhjijacededfib","efigbhacgebgicbjfdf","gighiijjdjibf","ebehbdbjdcj","jihf","bjiihijdeh","ibhbcjaicag","eaihhgaajifecihacb","c","djbjhgdacd","jdhdigeaggigidg","hifhfafaidebehgj","dge","hcaaifieddcbhh","dfahhcjf","bjdggigf","baicghahbjcgbacgiaf","iaceaaaaacj","fjajicg","edhhadafcdfh","ddfiiaiffegcajjcai","dfcae","cfajhadccahh","hih","fgdhbjfcaadfjggdbgij","df","dbagdcceaf","abehcghbhdfhaahif","ic","jggafjhheeedaffice","gcdfjchhfjbiifcjbie","fahgedjaedggaffgcg","jefbad","cda","gijbhcbibicbbgh","dia","eajcedgjejfcid","ccjdhcfageggcc","fgefjhcaeceahfbag","aeifefjghfe","fjjc","afiiaigdafiggj","hhagciahgafecdeb","jgjaf","jiefgab","gdecijh","iaejf","abgfbgfdgfhg","eiaha","dheecf","hdbhcdjaajfifeehbhaj","ijbebi","ffhfahb","ifhfcafahg","igeedbhjhgjdfbhaie","aahjceee","fbjacifgcbae","abffeafgbjidiacigcbi","gbdhc","bgjeeicfdejhddfeb","hgdjaeedced","jegabegajhjdhbhjchc","cegagchihaebca","bf","ichaedbhjgifjc","eihcafeccegh","ifacjhbcfef","hgghaghah","ejgagghcgifceg","iiedjjibdehhcebch","edeeff","behj","ee","fedgjaibd","jfjjjecefgebeaij","iabafiij","dcbjafbjiibiiieegfff","aeiehbhejegbfiiiehf","gahhjg","edhiagejaaaccdch","ibifchfieegbc","ighdibbigbgb","dacjbbjc","cehiciijhjgded","ecgbfe","bjfi","dcjcgbjdgegbjfdajbe","bgacaaccjachggeae","biceghffcibcbdiajfhd","fddeac","hgbgiihgdjbidijdjdeh","ajagaffehehjijgii","cj","cfieaae","dbhjjhh","hha","begiaibefe","aehecefcbajd","jejdchciidcifgabja","baebgbbedfdidf","aaifafefaa","hidic","adfjgeia","fbfhedagje","ajhfdjeifae","djaafhjeg","fhej","ffjdfjhfffjddfh","bfhejfjjfijdabfffhe","hecejcjfcgfia","dhefgbifggcjbbb","hiedeaca","cfaicah","djabb","eefbjhbcedgddffaibe","fagdfcghibejjceeeaf","gg","gdd","bhahcjjaifchheadjjb","fdg","hcdhb","fhejdcgcaafcc","fhjajgheaagg","gaefacci","iejabagigadgef","jhfaijhjadejghhbhcb","cgjg","afah","agbeifigjjgge","iiehhfiejadijaecichh","e","aegdichiabcggcgifad","ieadcfjdeghfdh","fajbhbejfba","ihdigidgibdcabbheb","jffddha","iebeif","hbcdd","dbcgaehecjjcd","gjafcdiagfbbhjheghh","iihjbeghfegghghjjb","gaidfhggfjgghcbfi","dfgbeehcdhdcidgdgig","dja","bfebchdjhj","jjibbgg","gcbifdfcjbcjdjjc","ddjigfjacdfjcbdci","ecahacbhfb","baf","cidbfajegaahhidgde","ffd","cihddbbheji","jhachgaggdffadafe","defa","de","bffbbigfa","ifbifca","fcccbedgffjecbddej","eddce","ecihdgei","gijbffjiabhhfgifa","eagiddhgicaehagccj","eciadh","ddjgddce","dgia","eifgaebjhcf","baceefhigiheeebbg","fcijiciahd","bdjg","ccbabi","cabedbhfgbfjcj","gggcjcf","ehbefahecgjfdfba","hccifbffbabfggddcjdi","jhigcjhfegefcjffhhh","bdfjgjb","cagcaih","jhhgdfabfffdbfc","djdigbhhgagidbi","ibibhbheahbdif","hceejhgibedhaicjfd","eah","gffidcffbbccijia","degaddhiaafbfcj","jb","hcfigabi","bjgfdfahefaaaja","fgechigaecaaj","hjgffgibciciaaed","gdihjbhcfjeff","hhbba","ha","bibedaiiiheadfja","aagjafahc","cjjeaeefigbfadd","ffejeeccgfgjbedb","cabceag","jegiabbf","eccjiidaiidc","cgjf","cbbhdffi","efcgiacabadjgiac","ije","ijjababfffahbea","dfgdeifjffjeacebaagg","eajgaj","ejhjcgfejbc","bjihg","ebdefefjj","iecjggbgc","dcicdhcbai","ccahaefafjebha","iacgffacb","fbiadfciagbefehdahcf","jbffffibebhbigea","ajehbeaaiheeah","afgfgcbafjfceggai","fffhfhhb","aejjac","adaheadjhhjgieba","fga","chhahaifiaifgdhejf","jgiciahbfid","ifchdjbcjachf","gfjgbfadggfdhdifjgbe","jbegfeeddih","hicbbedceeghfihjegha","ceabfiiddcdcgh","ffbgcigieiebff","diffdachhf","cdhb","deadeaddejif","ebgdgdhai","dj","fieijggicedec","accdihgdheiejdgaif","eddiaciddecjai","fdaibgi","echfcfcgjihhheihaf","egjhgiccchfed","fcfgahgijjfhdiajg","bddfddahjib","bdjjhcdjhbggf","ddgcccihb","gbejhabaedjehaaic","fjaicjijfcidhegie","ehiahijjgfigddbbehe","dcebd","bddchjcidffdffaagh","jchcajiffhgaahd","bcefifhbdcichjd","jfhai","adgag","cdgccjfjjdjajb","jcdchdbahddbgfaheja","aah","bh","jfjeeigc","ch","egg","ghjhajfjih","ibajgd","fhdjidbcgiabfcded","bidbjeffaafhdeha","jcaibccjhcfdfjdfafg","dhddhdcdfaiffjcgdfea","cjbabajccigicddchj","afdbgcff","cdbcfjhgcihcbgfieghg","jecbghgafefgbdg","cdfi","cggib","fbcidbbiejbdfhcdgbii","fdiabfaiccdeebahge","icecchbidacede","jcbfgbgjghdaebiggfe","jji","fhaca","dedfecdgfjb","aebbeeif","hddgfjh","iebfgajeehjaeegc","acfbihagejccf","jbdhfdbdcgjhdfjg","jdjbhbfibff","iijija","gjihjegghj","iedabdaifb","adfbcgagdfibahdiice","ibeihjjbhffehj","gaiagjgie","beehjcfegcghejhdf","ejgaiafejgdfi","fheiachbejggbe","jhbdfebda","gighhehjebhbib"], "output":[[3,0],[1,3],[4,0],[2,4],[5,0],[0,5]]},
+{"input":["a","b","c","ab","ac","aa"], "output":[[3,0],[1,3],[4,0],[2,4],[5,0],[0,5]]},
+{"input": ["a",""], "output":[[0,1],[1,0]]},
 {"input": ["abcd","dcba","lls","s","sssll"], "output":[[0,1],[1,0],[3,2],[2,4]] },
 
 ]

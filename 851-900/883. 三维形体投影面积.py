@@ -14,7 +14,7 @@ class Solution:
 
 s=Solution()
 test=[
-
+{"input":[[2,1],[1,1]], "output":8},
 {"input":[[1,0],[0,2]], "output":8},
 {"input":[[1,1,1],[1,0,1],[1,1,1]], "output":14},
 ]
@@ -24,3 +24,4 @@ for t in test:
     if r!=t['output']:
         print("error:"+str(t)+" out:"+str(r))
         r = s.projectionArea(t['input'])
+

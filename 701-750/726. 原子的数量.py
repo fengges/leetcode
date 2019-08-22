@@ -60,6 +60,7 @@ class Solution:
 
 s=Solution()
 test=[
+{"input": "K4(ON(SO3)2)2", "output":"K4N2O14S4"},
 {"input": "H11He49NO35B7N46Li20", "output":"B7H11He49Li20N47O35"},
 {"input": "Be32", "output":"Be32"},
 {"input": "K4(ON(SO3)2)2", "output":"K4N2O14S4"},
