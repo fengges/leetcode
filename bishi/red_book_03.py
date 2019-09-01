@@ -25,15 +25,5 @@ def func(values,N):
             else:
                 return min(deep(dp, True, index - 1) + 1, deep(dp, False, index - 1))
     return maxn, min(deep(dp, True, N - 1) + 1, deep(dp, False, N - 1))
-# def rob(nums):
-#     flag = [0 for i in range(len(nums) + 2)]
-#     for i in range(len(nums)):
-#         flag[i + 2] = max(flag[i] + nums[i], flag[i + 1])
-#     r=0
-#     for i in range(len(nums)-1,-1,-1):
-#         if flag[i + 2]-flag[i]==nums[i] and nums[i]!=0:
-#             r+=1
-#     return flag[-1],max(r-1,0)
-# v1,v2=rob(values)
 v1,v2=func(values,N)
 print(v1,v2)

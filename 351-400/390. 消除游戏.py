@@ -4,16 +4,7 @@ class Solution:
         left=True
         odd=1
         while len(nums)>1:
-            if left:
-                odd=0
-                left=False
-            else:
-                left=True
-                if len(nums)%2!=0:
-                    odd = 0
-                else:
-                    odd = 1
-            nums=[n for i,n in enumerate(nums) if i%2!=odd ]
+            nums=nums[::2]
         return nums[0]
 s=Solution()
 
