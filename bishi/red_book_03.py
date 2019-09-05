@@ -25,5 +25,6 @@ def func(values,N):
             else:
                 return min(deep(dp, True, index - 1) + 1, deep(dp, False, index - 1))
     return maxn, min(deep(dp, True, N - 1) + 1, deep(dp, False, N - 1))
+
 v1,v2=func(values,N)
 print(v1,v2)
