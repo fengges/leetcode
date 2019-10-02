@@ -23,6 +23,7 @@ class Solution:
 
 s=Solution()
 test=[
+{"input":["bccbbbdddddd",3] , "output":0},
 {"input":["ababacb",3] , "output":0},
 ]
 for t in test:

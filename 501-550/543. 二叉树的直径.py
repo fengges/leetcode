@@ -1,5 +1,7 @@
 from util.tree import *
+__d
 class TreeNode:
+
     def __init__(self, x):
         self.val = x
         self.left = None
@@ -28,3 +30,4 @@ for t in test:
     r = s.diameterOfBinaryTree(t['input'])
     if r != t['output']:
         print("error:" + str(t) + " out:" + str(r))
+
