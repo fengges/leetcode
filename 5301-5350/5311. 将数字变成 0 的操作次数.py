@@ -15,3 +15,4 @@ for t in test:
     r=s.numberOfSteps(t['input'])
     if r!=t['output']:
         print("error:"+str(t)+" out:"+str(r))
+
