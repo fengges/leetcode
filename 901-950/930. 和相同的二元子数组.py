@@ -12,11 +12,12 @@ class Solution:
                     sum += A[e]
                     e+=1
             elif sum<=S:
-                if sum==S and s<e:
+                if sum==S :
                     r+=1
                 if e==size:
                     break
                 else:
+                    # if sum==S:
                     sum += A[e]
                     e+=1
 
