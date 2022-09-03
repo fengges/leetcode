@@ -1,31 +1,16 @@
 class Solution:
     def numSubarraysWithSum(self, A, S):
-        s,e,size=0,0,len(A)
-        r,sum=0,0
-        while s<=size or e<=size:
-            if sum==S and s<e:
-                r+=1
-                if e==size:
-                    sum -= A[s]
-                    s+=1
-                else:
-                    sum += A[e]
-                    e+=1
-            elif sum<=S:
-                if sum==S :
-                    r+=1
-                if e==size:
-                    break
-                else:
-                    # if sum==S:
-                    sum += A[e]
-                    e+=1
+        sum = 0
+        cnt={}
+        ret = 0
+        for num in A:
+            cnt[sum]=cnt.get(sum,0)+1
+            sum += num;
+            ret += cnt.get(sum-S,0);
+
+        return ret
 
 
-            else:
-                sum-=A[s]
-                s+=1
-        return r
 s=Solution()
 test=[
 {"input":  [[0,0,0,0,0],0],"output":15},

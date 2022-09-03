@@ -39,13 +39,13 @@ class Solution:
 s=Solution()
 
 test=[
-{"input":deserialize([1,None,2,3]),"output":2},
+    {"input":[deserialize([5,3,6,2,4,None,7]),9],"output":True},
 
 
 
 ]
 for t in test:
-    r=s.inorderTraversal(t['input'])
+    r=s.findTarget(*t['input'])
     if r!=t['output']:
         print("error:"+str(t)+" out:"+str(r))
         r = s.inorderTraversal(t['input'])

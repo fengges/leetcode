@@ -1,6 +1,6 @@
 class Solution:
     def shipWithinDays(self, weights, days: int):
-        weights.sort(reverse=True)
+        # weights.sort(reverse=True)
 
         ans=[0 for i in range(days)]
         for w in weights:
@@ -12,6 +12,8 @@ class Solution:
 s=Solution()
 
 test=[
+
+    {"input":[[3,2,2,4,1,4],3],"output":6},
     {"input":[[1,2,3,4,5,6,7,8,9,10],5],"output":15},
 
 ]

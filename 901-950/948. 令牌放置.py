@@ -1,16 +1,22 @@
 class Solution:
     def bagOfTokensScore(self, tokens, P):
         tokens.sort()
-        all=sum(tokens)
-        r,size=0,len(tokens)
-        now=0
-        while r<size:
-            now+=tokens[r]
-            r+=1
-            if all-now+P<=now:
-                r-=1
-                break
-        return r
+        l,r=0,len(tokens)-1
+        ans,sorce=0,0
+        while l<=r:
+            if tokens[l]>P:
+                if ans>0:
+                    ans-=1
+                    P+=tokens[r]
+                    r-=1
+                else:
+                    break
+            else:
+                P-=tokens[l]
+                l+=1
+                ans+=1
+                sorce=max(sorce,ans)
+        return sorce
 s=Solution()
 
 test=[

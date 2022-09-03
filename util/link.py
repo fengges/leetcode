@@ -15,6 +15,6 @@ def toLinkNode(nums,C=False):
         temp.next=head.next
     return head.next
 
-nums=[1,2]
-for n,v in enumerate(nums):
-    print(n)
+# nums=[1,2]
+# for n,v in enumerate(nums):
+#     print(n)
